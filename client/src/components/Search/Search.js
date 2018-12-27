@@ -24,6 +24,7 @@ class Search extends Component {
   handleFormSubmit = event => {
     // Preventing the default behavior of the form submit (which is to refresh the page)
     event.preventDefault();
+    console.log("Form Submit")
 
    // Call the NYT api to get the articles.  Pass the parameters needed
    const params = {
@@ -33,10 +34,10 @@ class Search extends Component {
     "end_date"  : `${this.state.endYear}1231`
   };
 
-
    axios
    .get("https://api.nytimes.com/svc/search/v2/articlesearch.json?", {params})
    .then(response => {
+       console.log("Search successful.")
        const results = response.data.response.docs.map(a => ({
            "id"       : a._id,
            "title"    : a.headline.main,
@@ -58,7 +59,7 @@ class Search extends Component {
    .catch(error => {
        console.error(error);
    });
-   
+
   };
 
   render() {
