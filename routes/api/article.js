@@ -10,6 +10,6 @@ router.route("/")
 // Matches with "/api/articles/:id"
 router
   .route("/:id")
-  .delete(booksController.remove);  // (delete) - your components will use this to delete a saved article in the database
+  .delete(articleController.remove);  // (delete) - your components will use this to delete a saved article in the database
 
 module.exports = router;
