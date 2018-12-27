@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import "./Search.css";
+import axios from "axios";
 
 class Search extends Component {
   // Setting the component's initial state
   state = {
     topic: "",
     startYear: "", 
-    endYear: ""
+    endYear: "",
+    articles: []
   };
 
   handleInputChange = event => {
@@ -23,18 +25,40 @@ class Search extends Component {
     // Preventing the default behavior of the form submit (which is to refresh the page)
     event.preventDefault();
 
-   // TODO: call the api to get the articles.  Pass the parameters needed
-   // this.state.topic
-   // this.state.startYear
-   // this.state.endYear
+   // Call the NYT api to get the articles.  Pass the parameters needed
+   const params = {
+    "api-key"   : "b9f91d369ff59547cd47b931d8cbc56b:0:74623931",  //trilogy api key
+    "q"         : this.state.topic,
+    "begin_date": `${this.state.startYear}0101`,
+    "end_date"  : `${this.state.endYear}1231`
+  };
 
-   // Handle results?
 
-    this.setState({
-      topic: "",
-      startYear: "",
-      endYear: ""
-    });
+   axios
+   .get("https://api.nytimes.com/svc/search/v2/articlesearch.json?", {params})
+   .then(response => {
+       const results = response.data.response.docs.map(a => ({
+           "id"       : a._id,
+           "title"    : a.headline.main,
+           "byline"   : a.byline,
+           "summary"  : a.snippet,
+           "url"      : a.web_url,
+           "date"     : a.pub_date
+       }));
+
+        // Handle results 
+        this.setState({
+          topic: "",
+          startYear: "",
+          endYear: "",
+          articles: results
+        });
+
+   })
+   .catch(error => {
+       console.error(error);
+   });
+   
   };
 
   render() {
