@@ -5,8 +5,10 @@ import Results from "../Results";
 import Saved from "../Saved";
 
 const App = () =>
-  <header>
-    <Header />
+  <div className="container">
+    <header>
+      <Header />
+    </header>
     <section>
       <Search />
     </section>
@@ -16,6 +18,6 @@ const App = () =>
     <section>
       <Saved />
     </section>
-  </header>;
+  </div>
 
 export default App;
